@@ -1,0 +1,13 @@
+node_modules/
+.env
+dist/
+*.log
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Trained ML model files (teammates should train their own with train_model.py)
+ml-service/model/*.pkl
+ml-service/model/model_info.txt
