@@ -7,6 +7,11 @@ history, edit/delete. The foundation every later module builds on.
 description, a Python ML service predicts its category and pre-fills the
 dropdown (you can still override it).
 
+**Module 3** — budget management & alerts. Set monthly spending limits by
+category (e.g. Food ₹5,000, Transport ₹3,000), monitor spending vs remaining
+budget in real-time, visual color-coded progress bars, and proactive rule-based
+alerts (⚠️ 85% budget used, 🚨 budget exceeded).
+
 **Stack:** React (Vite) + Node/Express + MongoDB for the app, Python (Flask +
 scikit-learn) for the ML service.
 
@@ -14,8 +19,8 @@ scikit-learn) for the ML service.
 
 ```
 finance-manager/
-├── backend/          Express API (auth, income, expense, categorize routes)
-├── frontend/          React app (login, signup, dashboard)
+├── backend/          Express API (auth, income, expense, categorize, budget routes)
+├── frontend/          React app (login, signup, dashboard, budget manager)
 └── ml-service/         Python Flask API for expense categorization (Module 2)
 ```
 
@@ -25,9 +30,9 @@ finance-manager/
 2. `backend` → `npm run dev` (port 5000)
 3. `frontend` → `npm run dev` (port 5173)
 
-Module 1 (login, income, expenses) works fine even if the ML service isn't
-running — the category suggestion just silently won't appear, and you fall
-back to picking a category manually.
+Module 1 (login, income, expenses) and Module 3 (budgets & alerts) work fine
+even if the ML service isn't running — the category suggestion will simply
+default to manual category selection.
 
 ## Prerequisites
 
@@ -67,47 +72,49 @@ npm run dev
 
 Open the URL Vite prints (usually `http://localhost:5173`).
 
-## 3. Try the full demo flow
+## 3. Try the full demo flow (Modules 1, 2, and 3)
 
 1. Sign up with a name, email, password
 2. You're logged in automatically → Dashboard
 3. Add income (e.g. Salary, ₹40,000)
-4. Add an expense (e.g. ₹500, Dinner, Food, UPI)
-5. Add a couple more expenses in different categories
-6. Filter expenses by category and by month
-7. Edit an expense, then delete one
-8. Logout, then log back in — your data is still there (stored in MongoDB)
-
-This is exactly the demo flow described in your project plan.
+4. Go to **🎯 Budget Management (Module 3)** tab:
+   - Set a budget for **Food**: ₹5,000
+   - Set a budget for **Transport**: ₹3,000
+5. Switch to **💳 Transactions** tab:
+   - Add an expense: ₹4,200 for "Dinner at restaurant" (Category: Food)
+   - Notice the suggested category from ML service (Module 2)!
+6. Check the Budget:
+   - Food spending is now ₹4,200 / ₹5,000 (84% spent, ₹800 remaining).
+   - Add another ₹100 expense in Food → triggers **⚠️ You have used 86% of your Food budget.**
+   - Add another ₹1,000 expense in Food → triggers **🚨 Food budget exceeded!** alert banner.
+7. Filter expenses by category and month, edit, or delete items.
+8. Real-time updates keep budgets and transactions completely synchronized.
 
 ## API reference (for your own testing/documentation)
 
-| Method | Route              | Auth required | Purpose               |
-|--------|---------------------|:---:|------------------------|
-| POST   | /api/auth/signup    | No  | Create account         |
-| POST   | /api/auth/login     | No  | Log in, get JWT        |
-| GET    | /api/auth/me        | Yes | Get current user       |
-| POST   | /api/income         | Yes | Add income             |
-| GET    | /api/income         | Yes | List income            |
-| PUT    | /api/income/:id     | Yes | Edit income            |
-| DELETE | /api/income/:id     | Yes | Delete income          |
-| POST   | /api/expense        | Yes | Add expense            |
-| GET    | /api/expense        | Yes | List expenses (supports `?category=` and `?month=YYYY-MM`) |
-| PUT    | /api/expense/:id    | Yes | Edit expense           |
-| DELETE | /api/expense/:id    | Yes | Delete expense         |
+| Method | Route                   | Auth required | Purpose                                                                    |
+|--------|-------------------------|:---:|----------------------------------------------------------------------------|
+| POST   | /api/auth/signup        | No  | Create account                                                             |
+| POST   | /api/auth/login         | No  | Log in, get JWT                                                            |
+| GET    | /api/auth/me            | Yes | Get current user                                                           |
+| POST   | /api/income             | Yes | Add income                                                                 |
+| GET    | /api/income             | Yes | List income                                                                |
+| PUT    | /api/income/:id         | Yes | Edit income                                                                |
+| DELETE | /api/income/:id         | Yes | Delete income                                                              |
+| POST   | /api/expense            | Yes | Add expense                                                                |
+| GET    | /api/expense            | Yes | List expenses (supports `?category=` and `?month=YYYY-MM`)                 |
+| PUT    | /api/expense/:id        | Yes | Edit expense                                                               |
+| DELETE | /api/expense/:id        | Yes | Delete expense                                                             |
+| POST   | /api/categorize/suggest | Yes | (Module 2) Predicts category from description via Python ML service         |
+| POST   | /api/budget             | Yes | (Module 3) Create or update monthly budget for a category                  |
+| GET    | /api/budget             | Yes | (Module 3) List user budgets for a month (`?month=YYYY-MM`)                |
+| PUT    | /api/budget/:id         | Yes | (Module 3) Edit a budget amount                                            |
+| DELETE | /api/budget/:id         | Yes | (Module 3) Delete a budget entry                                           |
+| GET    | /api/budget/status      | Yes | (Module 3) Compute spending vs budget, remaining, %, and rule-based alerts  |
 
 Protected routes expect a header: `Authorization: Bearer <token>` (handled automatically
 by the frontend once you're logged in).
 
-## Note on "Logout"
-
-Since this uses JWT (stateless tokens), logout simply deletes the token from the browser
-(`localStorage`) — there's no server-side session to close. This is standard for JWT auth
-and fine to explain as-is to your supervisor.
-
 ## Where this fits in your 8-module plan
 
-This app currently implements **Module 1** only. The `Income` and `Expense` collections
-are structured so Modules 2 (categorization), 3 (budgets), 4 (savings prediction), 5
-(financial health), and 7 (anomaly detection) can all read from this same data without
-changes to the schema.
+This app currently implements **Module 1** (User & Expense Management), **Module 2** (Automatic Expense Categorization), and **Module 3** (Budget Management & Alerts). Next up is **Module 4** (Monthly Savings Prediction).

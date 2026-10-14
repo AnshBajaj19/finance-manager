@@ -8,6 +8,7 @@ const authRoutes = require("./routes/auth");
 const incomeRoutes = require("./routes/income");
 const expenseRoutes = require("./routes/expense");
 const categorizeRoutes = require("./routes/categorize");
+const budgetRoutes = require("./routes/budget");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/income", incomeRoutes);
 app.use("/api/expense", expenseRoutes);
 app.use("/api/categorize", categorizeRoutes);
+app.use("/api/budget", budgetRoutes);
 
 // Fallback error handler
 app.use((err, req, res, next) => {
