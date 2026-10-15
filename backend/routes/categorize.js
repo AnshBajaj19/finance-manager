@@ -1,9 +1,22 @@
 const express = require("express");
 const auth = require("../middleware/auth");
+const { CATEGORIES } = require("../models/Expense");
 
 const router = express.Router();
 
 const ML_SERVICE_URL = process.env.ML_SERVICE_URL || "http://localhost:8000";
+
+// Maps Flask ML service output labels to the official application CATEGORIES enum
+const ML_TO_APP_CATEGORY_MAP = {
+  "Food & Dining": "Food",
+  "Travel & Commute": "Transport",
+  "Shopping & Groceries": "Shopping",
+  "Utilities & Bills": "Bills",
+  "Entertainment & Leisure": "Entertainment",
+  "Health & Medical": "Healthcare",
+  "Education": "Education",
+  "Investment & Savings": "Other",
+};
 
 // POST /api/categorize/suggest
 // Body: { description: "Pizza from Domino's" }
@@ -30,7 +43,17 @@ router.post("/suggest", auth, async (req, res) => {
     }
 
     const result = await mlResponse.json();
-    res.json(result); // { category: "Food", confidence: 0.87 }
+    const rawCategory = result.category;
+    // Map to valid enum; fallback to null if unrecognized
+    const mappedCategory =
+      ML_TO_APP_CATEGORY_MAP[rawCategory] ||
+      (CATEGORIES.includes(rawCategory) ? rawCategory : null);
+
+    res.json({
+      category: mappedCategory,
+      rawCategory,
+      confidence: result.confidence,
+    });
   } catch (err) {
     // Most common cause: the ML service (Flask, port 8000) isn't running
     res.status(503).json({
@@ -41,3 +64,4 @@ router.post("/suggest", auth, async (req, res) => {
 });
 
 module.exports = router;
+module.exports.ML_TO_APP_CATEGORY_MAP = ML_TO_APP_CATEGORY_MAP;

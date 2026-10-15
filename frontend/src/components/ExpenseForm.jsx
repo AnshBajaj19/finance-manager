@@ -28,10 +28,16 @@ export default function ExpenseForm({ onAdded }) {
     debounceRef.current = setTimeout(async () => {
       try {
         const result = await suggestCategory(description);
-        setSuggestion(result);
-        // Only auto-fill the category dropdown if the user hasn't manually changed it yet
-        if (!categoryTouched && result.category) {
-          setCategory(result.category);
+        // Only accept the suggestion if it matches a valid category in our dropdown
+        if (result && result.category && CATEGORIES.includes(result.category)) {
+          setSuggestion(result);
+          // Only auto-fill the category dropdown if the user hasn't manually changed it yet
+          if (!categoryTouched) {
+            setCategory(result.category);
+          }
+        } else {
+          // If prediction is unknown or invalid, do not overwrite; keep user's current selection as safe fallback
+          setSuggestion(null);
         }
       } catch (err) {
         // Fails silently in the UI — the user can still pick a category manually.

@@ -1,6 +1,7 @@
 const express = require("express");
 const Expense = require("../models/Expense");
 const auth = require("../middleware/auth");
+const { ML_TO_APP_CATEGORY_MAP } = require("./categorize");
 
 const router = express.Router();
 
@@ -20,11 +21,14 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "Amount must be greater than 0." });
     }
 
+    // Defensive mapping: resolve raw ML category name to standard enum if needed
+    const finalCategory = ML_TO_APP_CATEGORY_MAP[category] || category;
+
     const expense = await Expense.create({
       user_id: req.userId,
       amount,
       description,
-      category,
+      category: finalCategory,
       payment_method,
       date: date || Date.now(),
     });
@@ -74,7 +78,9 @@ router.put("/:id", async (req, res) => {
 
     if (amount !== undefined) expense.amount = amount;
     if (description !== undefined) expense.description = description;
-    if (category !== undefined) expense.category = category;
+    if (category !== undefined) {
+      expense.category = ML_TO_APP_CATEGORY_MAP[category] || category;
+    }
     if (payment_method !== undefined) expense.payment_method = payment_method;
     if (date !== undefined) expense.date = date;
 
