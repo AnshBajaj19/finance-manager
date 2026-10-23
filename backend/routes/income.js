@@ -1,6 +1,7 @@
 const express = require("express");
 const Income = require("../models/Income");
 const auth = require("../middleware/auth");
+const { buildDateFilter, escapeRegex } = require("../utils/dateRange");
 
 const router = express.Router();
 
@@ -32,10 +33,25 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET /api/income - list all income entries for the logged-in user
+// GET /api/income - list income entries for the logged-in user
+// Optional filters:
+//   ?month=2026-10                      one calendar month
+//   ?from=2026-10-01&to=2026-10-16      custom period (either end optional, "to" inclusive)
+//   ?search=salary                      text match on the income source
 router.get("/", async (req, res) => {
   try {
-    const income = await Income.find({ user_id: req.userId }).sort({ date: -1 });
+    const { month, from, to, search } = req.query;
+
+    const { filter, error } = buildDateFilter({ month, from, to });
+    if (error) return res.status(400).json({ message: error });
+
+    const query = { user_id: req.userId };
+    if (filter) query.date = filter;
+    if (search && search.trim()) {
+      query.source = { $regex: escapeRegex(search.trim()), $options: "i" };
+    }
+
+    const income = await Income.find(query).sort({ date: -1 });
     res.json(income);
   } catch (err) {
     res.status(500).json({ message: "Could not fetch income.", error: err.message });

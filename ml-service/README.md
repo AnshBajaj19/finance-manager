@@ -1,15 +1,18 @@
-# Module 2 — Automatic Expense Categorization (ML Service)
+# ML Service (Module 2 & Module 4)
 
-A small Python service that predicts an expense's category from its text
-description, using TF-IDF + a classifier trained on `dataset.csv`.
+A Python service that provides Machine Learning endpoints for:
+1. **Module 2: Automatic Expense Categorization** — predicts category from text using TF-IDF + Logistic Regression.
+2. **Module 4: Monthly Savings Prediction** — predicts expected monthly savings using regression algorithms (Linear Regression, Decision Tree, Random Forest) evaluated on MAE, RMSE, and R² scores.
 
 ## What's in here
 
-- `dataset.csv` — labeled training examples (description → category)
-- `train_model.py` — cleans the text, trains and compares 3 models (Logistic
-  Regression, Naive Bayes, Linear SVM), picks the best one, saves it
-- `app.py` — Flask API that loads the saved model and serves predictions
-- `model/` — where the trained model files get saved (created by `train_model.py`)
+- `dataset.csv` — labeled training examples for categorization (description → category)
+- `train_model.py` — cleans text, trains and compares 3 classification models, saves category model
+- `generate_savings_data.py` — generates realistic financial profiles with income, expenses, and savings
+- `savings_dataset.csv` — dataset with 3,000 monthly financial records for regression
+- `train_savings_model.py` — trains Linear Regression, Decision Tree, and Random Forest; evaluates MAE, RMSE, R²; saves champion model to `model/savings_model.pkl`
+- `app.py` — Flask API serving both categorization (`/predict`) and savings prediction (`/predict-savings`, `/savings-model-info`)
+- `model/` — where saved models and evaluation metadata are stored
 
 ## Setup
 

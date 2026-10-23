@@ -292,3 +292,798 @@ label {
     align-items: stretch;
   }
 }
+
+
+/* ==========================================================================
+   Module 3 — Budget Management Styles
+   ========================================================================== */
+
+.dashboard-nav-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 2px;
+}
+
+.tab-nav-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-nav-btn:hover {
+  background: rgba(37, 99, 235, 0.05);
+  color: var(--primary);
+}
+
+.tab-nav-btn.active {
+  color: var(--primary);
+  background: var(--card-bg);
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.tab-nav-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.alert-counter-badge {
+  background: var(--danger);
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+/* Budget Alert Callouts */
+.budget-alerts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.budget-alert-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 5px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.budget-alert-item.warning {
+  background: #fffbeb;
+  border-left-color: #f59e0b;
+  color: #92400e;
+}
+
+.budget-alert-item.danger {
+  background: #fef2f2;
+  border-left-color: #ef4444;
+  color: #991b1b;
+}
+
+.budget-alert-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.budget-alert-icon {
+  font-size: 18px;
+}
+
+/* Budget Overview & Month Filter Header */
+.budget-header-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.budget-month-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.budget-month-picker label {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* Budget Card Grid */
+.budget-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.budget-card-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.budget-card-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.budget-card-item.border-warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.budget-card-item.border-danger {
+  border-left: 4px solid #ef4444;
+}
+
+.budget-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.budget-category-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-pill.ok {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-pill.warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status-pill.danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Progress bar */
+.budget-progress-track {
+  width: 100%;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 12px 0 6px;
+}
+
+.budget-progress-thumb {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.budget-progress-thumb.ok {
+  background: #16a34a;
+}
+
+.budget-progress-thumb.warning {
+  background: #f59e0b;
+}
+
+.budget-progress-thumb.danger {
+  background: #ef4444;
+}
+
+.budget-numbers-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.budget-numbers-row strong {
+  color: var(--text);
+}
+
+.budget-remaining-text {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.budget-remaining-text.ok {
+  color: #16a34a;
+}
+
+.budget-remaining-text.warning {
+  color: #d97706;
+}
+
+.budget-remaining-text.danger {
+  color: #dc2626;
+}
+
+.budget-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.budget-actions-row button {
+  padding: 4px 10px;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Unbudgeted categories section */
+.unbudgeted-section {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+}
+
+.unbudgeted-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.unbudgeted-chip {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.unbudgeted-chip button {
+  padding: 2px 8px;
+  font-size: 11px;
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   Period selector + search (month / date range / all time)
+   ========================================================================== */
+
+.period-filter {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.period-filter-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.period-modes {
+  display: inline-flex;
+  background: #eef2f7;
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.period-mode-btn {
+  background: transparent;
+  color: var(--text-muted);
+  margin: 0;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.period-mode-btn:hover {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--primary);
+}
+
+.period-mode-btn.active {
+  background: var(--card-bg);
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.period-search {
+  position: relative;
+  flex: 1 1 280px;
+  max-width: 420px;
+}
+
+.period-search input {
+  width: 100%;
+  padding-right: 34px;
+}
+
+.period-search-clear {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  padding: 2px 9px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.period-search-clear:hover {
+  background: #e2e8f0;
+  color: var(--text);
+}
+
+.period-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.period-controls button {
+  margin: 0;
+}
+
+.period-step {
+  padding: 6px 12px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.period-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.period-presets {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: 6px;
+}
+
+.period-presets button {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.period-hint {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.period-showing {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.period-showing strong {
+  color: var(--primary);
+}
+
+.card-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.results-caption {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.results-caption strong {
+  color: var(--text);
+}
+
+@media (max-width: 700px) {
+  .period-filter-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .period-search {
+    max-width: none;
+  }
+}
+
+
+/* ==========================================================================
+   Module 4 — Savings Prediction Styles
+   ========================================================================== */
+
+.savings-prediction-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.savings-hero-card {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+}
+
+.savings-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.savings-hero-subtitle {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #bfdbfe;
+  font-weight: 600;
+}
+
+.savings-hero-amount {
+  font-size: 38px;
+  font-weight: 700;
+  margin: 6px 0 4px;
+  letter-spacing: -0.5px;
+}
+
+.savings-hero-rate {
+  font-size: 14px;
+  color: #dbeafe;
+}
+
+.savings-hero-badge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.savings-status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.savings-badge-healthy {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.savings-badge-moderate {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.savings-badge-tight {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.savings-badge-deficit {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.savings-ml-tag {
+  font-size: 12px;
+}
+
+.tag-ml-online {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.tag-ml-offline {
+  background: rgba(239, 68, 68, 0.3);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.savings-insight-box {
+  margin-top: 18px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.savings-insight-icon {
+  font-size: 20px;
+}
+
+/* Feature grid */
+.savings-features-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.savings-features-section h4 {
+  margin: 0 0 4px;
+}
+
+.savings-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.savings-feature-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.feature-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.feature-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Simulator */
+.savings-simulator-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.savings-simulator-card h4 {
+  margin: 0 0 4px;
+}
+
+.simulator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.simulator-grid input {
+  width: 100%;
+}
+
+.sim-result-box {
+  margin-top: 20px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.sim-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.sim-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.sim-result-details {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.sim-insight {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #1e40af;
+  line-height: 1.4;
+}
+
+/* Tables */
+.savings-history-section,
+.savings-ml-eval-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.savings-history-section h4,
+.savings-ml-eval-card h4 {
+  margin: 0 0 4px;
+}
+
+.eval-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.champion-badge {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  border: 1px solid #fde68a;
+}
+
+.history-table-wrapper {
+  overflow-x: auto;
+}
+
+.savings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.savings-table th,
+.savings-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.savings-table th {
+  background: var(--bg);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.highlight-row {
+  background: #f0fdf4;
+}
+
+.current-month-tag {
+  display: inline-block;
+  background: #22c55e;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 8px;
+}
+
+.champion-row {
+  background: #f0fdf4;
+}
+
+.champion-row td:first-child {
+  border-left: 3px solid #16a34a;
+}
+
+.eval-status-active {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.eval-status-evaluated {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.eval-metrics-explanation {
+  margin-top: 16px;
+  background: var(--bg);
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.eval-metrics-explanation strong {
+  color: var(--text);
+}
