@@ -2,6 +2,7 @@ const express = require("express");
 const Expense = require("../models/Expense");
 const auth = require("../middleware/auth");
 const { ML_TO_APP_CATEGORY_MAP } = require("./categorize");
+const { buildDateFilter, escapeRegex } = require("../utils/dateRange");
 
 const router = express.Router();
 
@@ -42,23 +43,24 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET /api/expense - list expenses, with optional category and month filters
-// Example: /api/expense?category=Food&month=2026-08
+// GET /api/expense - list expenses for the logged-in user
+// Optional filters (all can be combined):
+//   ?category=Food
+//   ?month=2026-10                      one calendar month
+//   ?from=2026-10-01&to=2026-10-16      custom period (either end optional, "to" inclusive)
+//   ?search=uber                        text match on the description
 router.get("/", async (req, res) => {
   try {
-    const { category, month } = req.query;
+    const { category, month, from, to, search } = req.query;
+
+    const { filter, error } = buildDateFilter({ month, from, to });
+    if (error) return res.status(400).json({ message: error });
+
     const query = { user_id: req.userId };
-
-    if (category && category !== "All") {
-      query.category = category;
-    }
-
-    if (month) {
-      // month format: "YYYY-MM"
-      const [year, mon] = month.split("-").map(Number);
-      const start = new Date(year, mon - 1, 1);
-      const end = new Date(year, mon, 1);
-      query.date = { $gte: start, $lt: end };
+    if (category && category !== "All") query.category = category;
+    if (filter) query.date = filter;
+    if (search && search.trim()) {
+      query.description = { $regex: escapeRegex(search.trim()), $options: "i" };
     }
 
     const expenses = await Expense.find(query).sort({ date: -1 });

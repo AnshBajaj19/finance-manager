@@ -27,7 +27,7 @@ export default function IncomeList({ income, onChanged }) {
   };
 
   if (income.length === 0) {
-    return <p className="empty-state">No income recorded yet.</p>;
+    return <p className="empty-state">No income found for this period.</p>;
   }
 
   return (

@@ -12,6 +12,8 @@ category (e.g. Food ₹5,000, Transport ₹3,000), monitor spending vs remaining
 budget in real-time, visual color-coded progress bars, and proactive rule-based
 alerts (⚠️ 85% budget used, 🚨 budget exceeded).
 
+**Module 4** — monthly savings prediction. Uses trained regression algorithms (Linear Regression, Decision Tree, Random Forest) evaluated with MAE, RMSE, and R² scores to forecast expected monthly savings based on income, expense breakdown, and historical saving habits. Includes an interactive what-if simulator and model comparison table.
+
 **Stack:** React (Vite) + Node/Express + MongoDB for the app, Python (Flask +
 scikit-learn) for the ML service.
 
@@ -19,9 +21,9 @@ scikit-learn) for the ML service.
 
 ```
 finance-manager/
-├── backend/          Express API (auth, income, expense, categorize, budget routes)
-├── frontend/          React app (login, signup, dashboard, budget manager)
-└── ml-service/         Python Flask API for expense categorization (Module 2)
+├── backend/          Express API (auth, income, expense, categorize, budget, savings routes)
+├── frontend/          React app (login, signup, dashboard, budget manager, savings predictor)
+└── ml-service/         Python Flask API for expense categorization (M2) & savings prediction (M4)
 ```
 
 ## Running everything (3 terminals)
@@ -111,10 +113,14 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 | PUT    | /api/budget/:id         | Yes | (Module 3) Edit a budget amount                                            |
 | DELETE | /api/budget/:id         | Yes | (Module 3) Delete a budget entry                                           |
 | GET    | /api/budget/status      | Yes | (Module 3) Compute spending vs budget, remaining, %, and rule-based alerts  |
+| GET    | /api/savings/predict    | Yes | (Module 4) Automated ML prediction of monthly savings from user records    |
+| POST   | /api/savings/simulate   | Yes | (Module 4) Interactive what-if scenario savings simulator                  |
+| GET    | /api/savings/history    | Yes | (Module 4) User's actual historical monthly savings track record           |
+| GET    | /api/savings/model-info | Yes | (Module 4) Regression model comparison & metrics (MAE, RMSE, R² scores)     |
 
 Protected routes expect a header: `Authorization: Bearer <token>` (handled automatically
 by the frontend once you're logged in).
 
 ## Where this fits in your 8-module plan
 
-This app currently implements **Module 1** (User & Expense Management), **Module 2** (Automatic Expense Categorization), and **Module 3** (Budget Management & Alerts). Next up is **Module 4** (Monthly Savings Prediction).
+This app currently implements **Module 1** (User & Expense Management), **Module 2** (Automatic Expense Categorization), **Module 3** (Budget Management & Alerts), and **Module 4** (Monthly Savings Prediction). Next up is **Module 5** (Financial Health Analysis).

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { updateExpense, deleteExpense, CATEGORIES } from "../api/expense";
 
-export default function ExpenseList({ expenses, filterCategory, setFilterCategory, filterMonth, setFilterMonth, onChanged }) {
+export default function ExpenseList({ expenses, filterCategory, setFilterCategory, onChanged }) {
   const [editingId, setEditingId] = useState(null);
   const [editAmount, setEditAmount] = useState("");
   const [editDescription, setEditDescription] = useState("");
@@ -46,25 +46,15 @@ export default function ExpenseList({ expenses, filterCategory, setFilterCategor
             ))}
           </select>
         </label>
-        <label>
-          Month:{" "}
-          <input type="month" value={filterMonth} onChange={(e) => setFilterMonth(e.target.value)} />
-        </label>
-        {(filterCategory !== "All" || filterMonth) && (
-          <button
-            className="secondary"
-            onClick={() => {
-              setFilterCategory("All");
-              setFilterMonth("");
-            }}
-          >
-            Clear filters
+        {filterCategory !== "All" && (
+          <button className="secondary" onClick={() => setFilterCategory("All")}>
+            Clear category filter
           </button>
         )}
       </div>
 
       {expenses.length === 0 ? (
-        <p className="empty-state">No expenses match your filters.</p>
+        <p className="empty-state">No expenses found for this period and filters.</p>
       ) : (
         <table className="data-table">
           <thead>
