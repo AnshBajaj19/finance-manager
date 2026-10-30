@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import {
   getSavingsPrediction,
   simulateSavings,
-  getSavingsModelInfo,
 } from "../api/savings";
 
 const formatMoney = (n) => {
@@ -16,7 +15,6 @@ export default function SavingsPrediction({ currentMonth }) {
     () => currentMonth || new Date().toISOString().slice(0, 7)
   );
   const [predictionData, setPredictionData] = useState(null);
-  const [modelInfo, setModelInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -30,17 +28,13 @@ export default function SavingsPrediction({ currentMonth }) {
   const [simResult, setSimResult] = useState(null);
   const [simulating, setSimulating] = useState(false);
 
-  // Load automated prediction and model evaluation info
+  // Load automated prediction info
   const loadData = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const [predRes, infoRes] = await Promise.all([
-        getSavingsPrediction(selectedMonth),
-        getSavingsModelInfo().catch(() => null),
-      ]);
+      const predRes = await getSavingsPrediction(selectedMonth);
       setPredictionData(predRes);
-      if (infoRes) setModelInfo(infoRes);
 
       // Pre-fill simulator with user's actual features if available
       if (predRes?.features_used) {
@@ -389,69 +383,6 @@ export default function SavingsPrediction({ currentMonth }) {
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-      )}
-
-      {/* Machine Learning Model Performance & Evaluation */}
-      {modelInfo?.comparison && (
-        <div className="savings-ml-eval-card">
-          <div className="eval-card-header">
-            <h4>🤖 ML Model Evaluation & Comparison (Module 4)</h4>
-            <span className="champion-badge">
-              Champion Model: <strong>{modelInfo.best_model}</strong>
-            </span>
-          </div>
-          <p className="subtitle" style={{ margin: "0 0 14px" }}>
-            In accordance with project requirements, three regression models were trained on {modelInfo.training_samples?.toLocaleString()} financial profiles and evaluated on held-out test data using MAE, RMSE, and R² Score:
-          </p>
-
-          <table className="savings-table eval-table">
-            <thead>
-              <tr>
-                <th>Regression Model</th>
-                <th>MAE (Mean Absolute Error)</th>
-                <th>RMSE (Root Mean Sq Error)</th>
-                <th>R² Score (Accuracy)</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {modelInfo.comparison.map((m) => {
-                const isChampion = m.name === modelInfo.best_model;
-                return (
-                  <tr key={m.name} className={isChampion ? "champion-row" : ""}>
-                    <td>
-                      <strong>{m.name}</strong>
-                    </td>
-                    <td>₹{m.mae?.toLocaleString()}</td>
-                    <td>₹{m.rmse?.toLocaleString()}</td>
-                    <td>
-                      <strong>{(m.r2 * 100).toFixed(2)}%</strong> ({m.r2})
-                    </td>
-                    <td>
-                      {isChampion ? (
-                        <span className="eval-status-active">🏆 Deployed Model</span>
-                      ) : (
-                        <span className="eval-status-evaluated">Evaluated</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          <div className="eval-metrics-explanation">
-            <div>
-              <strong>MAE (Mean Absolute Error):</strong> Average deviation of predictions from actual savings (lower is better).
-            </div>
-            <div>
-              <strong>RMSE (Root Mean Squared Error):</strong> Penalizes larger prediction errors (lower is better).
-            </div>
-            <div>
-              <strong>R² Score (Coefficient of Determination):</strong> Proportion of variance in savings explained by features (closer to 1.0 is better).
-            </div>
           </div>
         </div>
       )}

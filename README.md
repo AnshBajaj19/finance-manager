@@ -12,7 +12,9 @@ category (e.g. Food ₹5,000, Transport ₹3,000), monitor spending vs remaining
 budget in real-time, visual color-coded progress bars, and proactive rule-based
 alerts (⚠️ 85% budget used, 🚨 budget exceeded).
 
-**Module 4** — monthly savings prediction. Uses trained regression algorithms (Linear Regression, Decision Tree, Random Forest) evaluated with MAE, RMSE, and R² scores to forecast expected monthly savings based on income, expense breakdown, and historical saving habits. Includes an interactive what-if simulator and model comparison table.
+**Module 4** — monthly savings prediction. Uses trained regression algorithms (Linear Regression, Decision Tree, Random Forest) to forecast expected monthly savings based on income, expense breakdown, and historical saving habits. Includes an interactive what-if simulator.
+
+**Module 5** — financial health analysis. Evaluates the user's financial wellness using a 5-pillar scoring framework (0 - 100): Savings Ratio, Expense-to-Income Ratio, Budget Adherence, Discretionary Spending Ratio, and Consistency of Savings. Provides dynamic, quantitative rule-based recommendations and an interactive score improvement simulator.
 
 **Stack:** React (Vite) + Node/Express + MongoDB for the app, Python (Flask +
 scikit-learn) for the ML service.
@@ -21,8 +23,8 @@ scikit-learn) for the ML service.
 
 ```
 finance-manager/
-├── backend/          Express API (auth, income, expense, categorize, budget, savings routes)
-├── frontend/          React app (login, signup, dashboard, budget manager, savings predictor)
+├── backend/          Express API (auth, income, expense, categorize, budget, savings, health routes)
+├── frontend/          React app (login, signup, dashboard, budget manager, savings predictor, health analyzer)
 └── ml-service/         Python Flask API for expense categorization (M2) & savings prediction (M4)
 ```
 
@@ -32,9 +34,8 @@ finance-manager/
 2. `backend` → `npm run dev` (port 5000)
 3. `frontend` → `npm run dev` (port 5173)
 
-Module 1 (login, income, expenses) and Module 3 (budgets & alerts) work fine
-even if the ML service isn't running — the category suggestion will simply
-default to manual category selection.
+Module 1 (login, income, expenses), Module 3 (budgets & alerts), and Module 5 (financial health analysis) work fine
+even if the ML service isn't running.
 
 ## Prerequisites
 
@@ -74,7 +75,7 @@ npm run dev
 
 Open the URL Vite prints (usually `http://localhost:5173`).
 
-## 3. Try the full demo flow (Modules 1, 2, and 3)
+## 3. Try the full demo flow (Modules 1 to 5)
 
 1. Sign up with a name, email, password
 2. You're logged in automatically → Dashboard
@@ -89,8 +90,14 @@ Open the URL Vite prints (usually `http://localhost:5173`).
    - Food spending is now ₹4,200 / ₹5,000 (84% spent, ₹800 remaining).
    - Add another ₹100 expense in Food → triggers **⚠️ You have used 86% of your Food budget.**
    - Add another ₹1,000 expense in Food → triggers **🚨 Food budget exceeded!** alert banner.
-7. Filter expenses by category and month, edit, or delete items.
-8. Real-time updates keep budgets and transactions completely synchronized.
+7. Go to **💰 Savings Prediction (Module 4)** tab:
+   - View your machine learning predicted savings and projected savings rate.
+   - Test the interactive "What-If" simulator adjusting income and expenses.
+8. Go to **🏥 Financial Health (Module 5)** tab:
+   - View your overall Financial Health Score (e.g. 78/100).
+   - Check the 5 weighted pillars: Savings Ratio, Expense Ratio, Budget Adherence, Discretionary Spending, Consistency.
+   - Read personalized rule-based recommendations (e.g. "Try reducing shopping expenses by 15%").
+   - Test the interactive score improvement simulator.
 
 ## API reference (for your own testing/documentation)
 
@@ -116,11 +123,11 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 | GET    | /api/savings/predict    | Yes | (Module 4) Automated ML prediction of monthly savings from user records    |
 | POST   | /api/savings/simulate   | Yes | (Module 4) Interactive what-if scenario savings simulator                  |
 | GET    | /api/savings/history    | Yes | (Module 4) User's actual historical monthly savings track record           |
-| GET    | /api/savings/model-info | Yes | (Module 4) Regression model comparison & metrics (MAE, RMSE, R² scores)     |
+| GET    | /api/financial-health   | Yes | (Module 5) Financial Health Score (0-100), 5 pillars, and recommendations |
 
 Protected routes expect a header: `Authorization: Bearer <token>` (handled automatically
 by the frontend once you're logged in).
 
 ## Where this fits in your 8-module plan
 
-This app currently implements **Module 1** (User & Expense Management), **Module 2** (Automatic Expense Categorization), **Module 3** (Budget Management & Alerts), and **Module 4** (Monthly Savings Prediction). Next up is **Module 5** (Financial Health Analysis).
+This app currently implements **Module 1** (User & Expense Management), **Module 2** (Automatic Expense Categorization), **Module 3** (Budget Management & Alerts), **Module 4** (Monthly Savings Prediction), and **Module 5** (Financial Health Analysis). Next up is **Module 6** (Investment Recommendation).

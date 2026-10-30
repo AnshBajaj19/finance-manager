@@ -10,6 +10,7 @@ const categorizeRoutes = require("./routes/categorize");
 const budgetRoutes = require("./routes/budget");
 const summaryRoutes = require("./routes/summary");
 const savingsRoutes = require("./routes/savings");
+const financialHealthRoutes = require("./routes/financialHealth");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/categorize", categorizeRoutes);
 app.use("/api/budget", budgetRoutes);
 app.use("/api/summary", summaryRoutes);
 app.use("/api/savings", savingsRoutes);
+app.use("/api/financial-health", financialHealthRoutes);
 
 // Fallback error handler
 app.use((err, req, res, next) => {

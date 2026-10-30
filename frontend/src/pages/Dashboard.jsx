@@ -11,6 +11,7 @@ import ExpenseList from "../components/ExpenseList.jsx";
 import BudgetManagement from "../components/BudgetManagement.jsx";
 import BudgetAlerts from "../components/BudgetAlerts.jsx";
 import SavingsPrediction from "../components/SavingsPrediction.jsx";
+import FinancialHealth from "../components/FinancialHealth.jsx";
 import PeriodFilter from "../components/PeriodFilter.jsx";
 import { currentMonth, getPeriodParams, getPeriodLabel } from "../utils/period";
 
@@ -37,8 +38,8 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  // Module 3 - Budget Management State
-  const [activeTab, setActiveTab] = useState("transactions"); // "transactions" | "budgets"
+  // Navigation tab state: "transactions" | "budgets" | "savings" | "health"
+  const [activeTab, setActiveTab] = useState("transactions");
   const [budgetMonth, setBudgetMonth] = useState(() => new Date().toISOString().slice(0, 7));
   const [budgetStatus, setBudgetStatus] = useState(null);
 
@@ -226,6 +227,12 @@ export default function Dashboard() {
         >
           💰 Savings Prediction (Module 4)
         </button>
+        <button
+          className={`tab-nav-btn ${activeTab === "health" ? "active" : ""}`}
+          onClick={() => setActiveTab("health")}
+        >
+          🏥 Financial Health (Module 5)
+        </button>
       </div>
 
       {loading ? (
@@ -267,9 +274,16 @@ export default function Dashboard() {
             onBudgetChanged={loadBudget}
           />
         </section>
-      ) : (
+      ) : activeTab === "savings" ? (
         <section className="panel">
           <SavingsPrediction currentMonth={period.month || budgetMonth} />
+        </section>
+      ) : (
+        <section className="panel">
+          <FinancialHealth
+            currentMonth={period.month || budgetMonth}
+            onNavigateToBudget={() => setActiveTab("budgets")}
+          />
         </section>
       )}
     </div>
