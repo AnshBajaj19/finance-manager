@@ -11,6 +11,8 @@ const budgetRoutes = require("./routes/budget");
 const summaryRoutes = require("./routes/summary");
 const savingsRoutes = require("./routes/savings");
 const financialHealthRoutes = require("./routes/financialHealth");
+const investmentRoutes = require("./routes/investment");
+const alertsRoutes = require("./routes/alerts");
 
 const app = express();
 
@@ -31,6 +33,8 @@ app.use("/api/budget", budgetRoutes);
 app.use("/api/summary", summaryRoutes);
 app.use("/api/savings", savingsRoutes);
 app.use("/api/financial-health", financialHealthRoutes);
+app.use("/api/investment", investmentRoutes);
+app.use("/api/alerts", alertsRoutes);
 
 // Fallback error handler
 app.use((err, req, res, next) => {

@@ -11,6 +11,8 @@ import os
 import re
 import json
 import joblib
+import numpy as np
+from sklearn.ensemble import IsolationForest
 import pandas as pd
 from datetime import datetime
 from flask import Flask, request, jsonify
@@ -211,6 +213,75 @@ def get_savings_model_info():
         }), 404
 
     return jsonify(savings_model_metadata)
+
+
+# ==========================================================
+# MODULE 7: Anomaly & Unusual Expense Detection
+# (Rule-Based + Z-Score + Isolation Forest Outlier Analysis)
+# ==========================================================
+@app.route("/detect-anomaly", methods=["POST"])
+def detect_anomaly():
+    try:
+        data = request.get_json() or {}
+        amount = float(data.get("amount", 0))
+        category = str(data.get("category", "General"))
+        history = [float(x) for x in data.get("history", []) if x > 0]
+        multiplier_threshold = float(data.get("multiplier_threshold", 2.5))
+        z_threshold = float(data.get("z_threshold", 2.0))
+
+        if not history:
+            return jsonify({
+                "is_anomaly": False,
+                "category_average": amount,
+                "multiplier": 1.0,
+                "z_score": 0.0,
+                "method": "insufficient_history",
+                "reason": "Initial baseline entry."
+            })
+
+        mean_val = float(np.mean(history))
+        std_val = float(np.std(history, ddof=1)) if len(history) > 1 else 0.0
+        multiplier = round(amount / mean_val, 2) if mean_val > 0 else 1.0
+        z_score = round(float((amount - mean_val) / std_val), 2) if std_val > 0 else 0.0
+
+        is_anomaly = False
+        method = "rule_threshold"
+        reason = ""
+
+        # Isolation Forest outlier check if sufficient sample size
+        if len(history) >= 5:
+            arr = np.array(history + [amount]).reshape(-1, 1)
+            clf = IsolationForest(contamination=0.1, random_state=42)
+            preds = clf.fit_predict(arr)
+            is_if_outlier = (preds[-1] == -1)
+
+            if is_if_outlier and (multiplier >= 2.0 or z_score >= 1.8):
+                is_anomaly = True
+                method = "isolation_forest"
+                reason = f"Isolation Forest flagged ₹{amount:,.0f} as an outlier in {category} ({multiplier:.1f}x higher than average of ₹{mean_val:,.0f})."
+
+        # Statistical Z-Score / Multiplier Check
+        if not is_anomaly:
+            if amount >= 500 and multiplier >= multiplier_threshold:
+                is_anomaly = True
+                method = "rule_multiplier"
+                reason = f"Expense of ₹{amount:,.0f} is {multiplier:.1f}x higher than your typical {category} spending of ₹{mean_val:,.0f}."
+            elif len(history) >= 3 and z_score >= z_threshold:
+                is_anomaly = True
+                method = "z_score_statistical"
+                reason = f"Expense of ₹{amount:,.0f} exhibits high statistical outlier divergence (Z-Score: {z_score:.2f}) from typical {category} records."
+
+        return jsonify({
+            "is_anomaly": is_anomaly,
+            "category_average": round(mean_val, 2),
+            "multiplier": multiplier,
+            "z_score": z_score,
+            "method": method,
+            "reason": reason
+        })
+
+    except Exception as e:
+        return jsonify({"error": f"Anomaly detection failed: {str(e)}"}), 500
 
 
 if __name__ == "__main__":

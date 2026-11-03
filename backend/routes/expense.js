@@ -2,6 +2,7 @@ const express = require("express");
 const Expense = require("../models/Expense");
 const auth = require("../middleware/auth");
 const { buildDateFilter, escapeRegex } = require("../utils/dateRange");
+const { processExpenseAlerts } = require("../utils/anomalyDetector");
 
 const router = express.Router();
 
@@ -30,7 +31,20 @@ router.post("/", async (req, res) => {
       date: date || Date.now(),
     });
 
-    res.status(201).json(expense);
+    // Run Module 7 Anomaly Detection & Budget Alerts
+    let alertInfo = null;
+    try {
+      alertInfo = await processExpenseAlerts(req.userId, expense);
+    } catch (alertErr) {
+      console.error("[Module 7] Alert processing error:", alertErr.message);
+    }
+
+    const responseObj = expense.toObject();
+    if (alertInfo && alertInfo.triggeredAlerts && alertInfo.triggeredAlerts.length > 0) {
+      responseObj.triggeredAlerts = alertInfo.triggeredAlerts;
+    }
+
+    res.status(201).json(responseObj);
   } catch (err) {
     if (err.name === "ValidationError") {
       return res.status(400).json({ message: err.message });
@@ -81,7 +95,20 @@ router.put("/:id", async (req, res) => {
     if (date !== undefined) expense.date = date;
 
     await expense.save();
-    res.json(expense);
+    // Run Module 7 Anomaly Detection & Budget Alerts on update
+    let alertInfo = null;
+    try {
+      alertInfo = await processExpenseAlerts(req.userId, expense);
+    } catch (alertErr) {
+      console.error("[Module 7] Alert processing error on update:", alertErr.message);
+    }
+
+    const responseObj = expense.toObject();
+    if (alertInfo && alertInfo.triggeredAlerts && alertInfo.triggeredAlerts.length > 0) {
+      responseObj.triggeredAlerts = alertInfo.triggeredAlerts;
+    }
+
+    res.json(responseObj);
   } catch (err) {
     if (err.name === "ValidationError") {
       return res.status(400).json({ message: err.message });

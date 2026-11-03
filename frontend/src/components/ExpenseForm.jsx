@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { addExpense, CATEGORIES, PAYMENT_METHODS } from "../api/expense";
 import { suggestCategory } from "../api/categorize";
+import { triggerDesktopNotification } from "./NotificationBell";
 
 export default function ExpenseForm({ onAdded }) {
   const [amount, setAmount] = useState("");
@@ -10,6 +11,7 @@ export default function ExpenseForm({ onAdded }) {
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [recentAlerts, setRecentAlerts] = useState([]);
 
   // Module 2 — ML category suggestion
   const [suggestion, setSuggestion] = useState(null); // { category, confidence }
@@ -54,14 +56,27 @@ export default function ExpenseForm({ onAdded }) {
     }
 
     setSaving(true);
+    setRecentAlerts([]);
     try {
-      await addExpense({
+      const res = await addExpense({
         amount: Number(amount),
         description,
         category,
         payment_method: paymentMethod,
         date,
       });
+
+      // Module 7: Handle triggered alerts (unusual expense / budget exceeded)
+      if (res && res.triggeredAlerts && res.triggeredAlerts.length > 0) {
+        setRecentAlerts(res.triggeredAlerts);
+        // Dispatch desktop notifications
+        for (const item of res.triggeredAlerts) {
+          if (item.alert) {
+            triggerDesktopNotification(item.alert.title, item.alert.message);
+          }
+        }
+      }
+
       setAmount("");
       setDescription("");
       setCategory(CATEGORIES[0]);
@@ -78,6 +93,35 @@ export default function ExpenseForm({ onAdded }) {
   return (
     <form className="inline-form" onSubmit={handleSubmit}>
       <h3>Add Expense</h3>
+      {recentAlerts.length > 0 && (
+        <div className="instant-alerts-container">
+          {recentAlerts.map((item, i) => (
+            <div
+              key={i}
+              className={`instant-alert-card ${item.alert?.severity === "danger" ? "danger" : "warning"}`}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <strong>
+                  {item.alert?.severity === "danger" ? "🚨" : "⚠️"} {item.alert?.title || "Alert Triggered"}
+                </strong>
+                <button
+                  type="button"
+                  className="dismiss-alert-btn"
+                  onClick={() => setRecentAlerts([])}
+                >
+                  ✕
+                </button>
+              </div>
+              <p style={{ margin: "4px 0", fontSize: "13px" }}>{item.alert?.message}</p>
+              {item.emailResult?.success && (
+                <span style={{ fontSize: "12px", color: "#15803d", fontWeight: 600 }}>
+                  📧 Alert notification has been dispatched to your email!
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
       {error && <div className="error-banner">{error}</div>}
       <div className="form-row">
         <input

@@ -16,6 +16,10 @@ alerts (⚠️ 85% budget used, 🚨 budget exceeded).
 
 **Module 5** — financial health analysis. Evaluates the user's financial wellness using a 5-pillar scoring framework (0 - 100): Savings Ratio, Expense-to-Income Ratio, Budget Adherence, Discretionary Spending Ratio, and Consistency of Savings. Provides dynamic, quantitative rule-based recommendations and an interactive score improvement simulator.
 
+**Module 6** — investment recommendation. Suggests suitable investment categories (Fixed Deposits, Debt Funds, PPF, Balanced/Hybrid Funds, Index Funds, Direct Equity/Flexi-Cap) tailored to the user's monthly income, savings capacity, risk tolerance (Low, Medium, High), financial goals, and investment horizon. Features multi-asset allocation visuals, emergency buffer readiness verification, persistent user profile storage in MongoDB, and an interactive SIP & wealth compounding simulator with milestone schedules.
+
+**Module 7** — alerts & anomaly detection. Detects unusual expenses and category spending spikes using category baseline multipliers, statistical Z-Score outlier analysis, and scikit-learn Isolation Forest scoring. Provides complete multi-channel alerting: interactive in-app notification bell with unread badge counter, browser desktop push notifications, live transaction alert banners, and rich HTML email alerts dispatched directly to the user's inbox.
+
 **Stack:** React (Vite) + Node/Express + MongoDB for the app, Python (Flask +
 scikit-learn) for the ML service.
 
@@ -98,6 +102,20 @@ Open the URL Vite prints (usually `http://localhost:5173`).
    - Check the 5 weighted pillars: Savings Ratio, Expense Ratio, Budget Adherence, Discretionary Spending, Consistency.
    - Read personalized rule-based recommendations (e.g. "Try reducing shopping expenses by 15%").
    - Test the interactive score improvement simulator.
+9. Go to **📈 Investment (Module 6)** tab:
+   - View auto-aggregated live monthly income, expenses, and net savings surplus.
+   - Switch between **🟢 Low Risk (Conservative)**, **🟡 Medium Risk (Moderate)**, and **🔴 High Risk (Aggressive)** to see instant dynamic asset allocation adjustments.
+   - Configure financial goals (Wealth Creation, Emergency Buffer, Retirement, Tax Saving, Home Downpayment) and investment horizons (Short, Medium, Long, Very Long Term).
+   - Review specific recommended instruments (Fixed Deposits, PPF, Short-Duration Debt Funds, Balanced Advantage/Hybrid Funds, Nifty 50 Index Funds, Flexi-Cap & Mid-Cap Funds) complete with expected CAGR return ranges, allocations, pros/cons, and real-world examples.
+   - Check emergency buffer health check (recommended 3 to 6 months of expenses).
+   - Test the **Interactive SIP & Corpus Growth Simulator** adjusting monthly investment, expected return rate, time horizon, and presets (Short-Term FD, Medium Hybrid, Long-Term Index, FIRE) with wealth milestone timelines.
+   - Click **Save Profile** to persist preferences to MongoDB.
+10. Go to **🚨 Alerts & Anomalies (Module 7)** tab:
+   - Notice the **🔔 Notification Bell** in the top navigation header showing real-time unread alert counts.
+   - Click "📧 Test Email Alert" to send a verification alert email to your registered email address.
+   - Use the **Live Anomaly Detection Workbench** to simulate entering a normal expense (e.g. ₹350 on Food) vs an anomalous spike (e.g. ₹4,500 on Food) to see instant multiplier and Z-Score diagnostics.
+   - Switch back to **💳 Transactions** and add an anomalous expense (e.g. ₹4,500 for "Luxury 5-course dinner" in Food) — watch the instant in-app alert banner appear, desktop push notification pop up, and an email dispatched with complete diagnostics!
+   - View your full historical anomalies list and customize email notification sensitivity thresholds.
 
 ## API reference (for your own testing/documentation)
 
@@ -110,9 +128,9 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 | GET    | /api/income             | Yes | List income                                                                |
 | PUT    | /api/income/:id         | Yes | Edit income                                                                |
 | DELETE | /api/income/:id         | Yes | Delete income                                                              |
-| POST   | /api/expense            | Yes | Add expense                                                                |
+| POST   | /api/expense            | Yes | Add expense (automatically triggers anomaly & budget breach checks)        |
 | GET    | /api/expense            | Yes | List expenses (supports `?category=` and `?month=YYYY-MM`)                 |
-| PUT    | /api/expense/:id        | Yes | Edit expense                                                               |
+| PUT    | /api/expense/:id        | Yes | Edit expense (re-evaluates anomaly triggers)                               |
 | DELETE | /api/expense/:id        | Yes | Delete expense                                                             |
 | POST   | /api/categorize/suggest | Yes | (Module 2) Predicts category from description via Python ML service         |
 | POST   | /api/budget             | Yes | (Module 3) Create or update monthly budget for a category                  |
@@ -124,10 +142,24 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 | POST   | /api/savings/simulate   | Yes | (Module 4) Interactive what-if scenario savings simulator                  |
 | GET    | /api/savings/history    | Yes | (Module 4) User's actual historical monthly savings track record           |
 | GET    | /api/financial-health   | Yes | (Module 5) Financial Health Score (0-100), 5 pillars, and recommendations |
+| GET    | /api/investment/profile | Yes | (Module 6) Retrieve user investment profile & live recommendations         |
+| POST   | /api/investment/profile | Yes | (Module 6) Save user investment profile & preferences in MongoDB           |
+| POST   | /api/investment/recommend| Yes | (Module 6) Dynamic rule-based investment recommendation engine             |
+| POST   | /api/investment/calculate-sip| Yes| (Module 6) Compound interest SIP & future corpus growth calculator        |
+| GET    | /api/alerts             | Yes | (Module 7) List all user notifications & alerts (`?unread=true`)            |
+| GET    | /api/alerts/unread-count| Yes | (Module 7) Quick unread notification counter for header badge              |
+| PUT    | /api/alerts/:id/read    | Yes | (Module 7) Mark single notification as read                                |
+| PUT    | /api/alerts/read-all    | Yes | (Module 7) Mark all notifications as read                                  |
+| DELETE | /api/alerts/:id         | Yes | (Module 7) Dismiss / delete notification                                   |
+| GET    | /api/alerts/anomalies   | Yes | (Module 7) Deep scan of user expenses detecting statistical outliers       |
+| GET    | /api/alerts/settings    | Yes | (Module 7) Get user alert & email preferences                              |
+| PUT    | /api/alerts/settings    | Yes | (Module 7) Update email notifications & anomaly sensitivity thresholds     |
+| POST   | /api/alerts/test-email  | Yes | (Module 7) Send verification test email alert to registered email          |
+| POST   | /api/alerts/test-simulation| Yes| (Module 7) Test hypothetical transaction anomaly diagnostics             |
 
 Protected routes expect a header: `Authorization: Bearer <token>` (handled automatically
 by the frontend once you're logged in).
 
 ## Where this fits in your 8-module plan
 
-This app currently implements **Module 1** (User & Expense Management), **Module 2** (Automatic Expense Categorization), **Module 3** (Budget Management & Alerts), **Module 4** (Monthly Savings Prediction), and **Module 5** (Financial Health Analysis). Next up is **Module 6** (Investment Recommendation).
+This app currently implements **Module 1** (User & Expense Management), **Module 2** (Automatic Expense Categorization), **Module 3** (Budget Management & Alerts), **Module 4** (Monthly Savings Prediction), **Module 5** (Financial Health Analysis), **Module 6** (Investment Recommendation), and **Module 7** (Alerts & Anomaly Detection). Next up is **Module 8** (Integration, Testing & Deployment).

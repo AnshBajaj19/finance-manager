@@ -12,6 +12,9 @@ import BudgetManagement from "../components/BudgetManagement.jsx";
 import BudgetAlerts from "../components/BudgetAlerts.jsx";
 import SavingsPrediction from "../components/SavingsPrediction.jsx";
 import FinancialHealth from "../components/FinancialHealth.jsx";
+import InvestmentRecommendation from "../components/InvestmentRecommendation.jsx";
+import AlertsAndAnomalyDetection from "../components/AlertsAndAnomalyDetection.jsx";
+import NotificationBell from "../components/NotificationBell.jsx";
 import PeriodFilter from "../components/PeriodFilter.jsx";
 import { currentMonth, getPeriodParams, getPeriodLabel } from "../utils/period";
 
@@ -42,6 +45,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("transactions");
   const [budgetMonth, setBudgetMonth] = useState(() => new Date().toISOString().slice(0, 7));
   const [budgetStatus, setBudgetStatus] = useState(null);
+  const [alertRefreshTrigger, setAlertRefreshTrigger] = useState(0);
 
   const navigate = useNavigate();
 
@@ -115,10 +119,10 @@ export default function Dashboard() {
     () => Promise.all([loadIncome(), loadSummary()]),
     [loadIncome, loadSummary]
   );
-  const refreshExpenses = useCallback(
-    () => Promise.all([loadExpenses(), loadSummary()]),
-    [loadExpenses, loadSummary]
-  );
+  const refreshExpenses = useCallback(() => {
+    setAlertRefreshTrigger((n) => n + 1);
+    return Promise.all([loadExpenses(), loadSummary()]);
+  }, [loadExpenses, loadSummary]);
 
   // Initial load, and again whenever the period / search / category changes
   useEffect(() => {
@@ -149,9 +153,15 @@ export default function Dashboard() {
           <h1>Finance Manager</h1>
           {user && <p className="subtitle">Welcome back, {user.name}</p>}
         </div>
-        <button onClick={handleLogout} className="secondary">
-          Logout
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <NotificationBell
+            onNavigateToModule7={() => setActiveTab("alerts")}
+            refreshTrigger={alertRefreshTrigger}
+          />
+          <button onClick={handleLogout} className="secondary">
+            Logout
+          </button>
+        </div>
       </header>
 
       {/* Period + search: controls the cards and both lists below */}
@@ -233,6 +243,18 @@ export default function Dashboard() {
         >
           🏥 Financial Health (Module 5)
         </button>
+        <button
+          className={`tab-nav-btn ${activeTab === "investments" ? "active" : ""}`}
+          onClick={() => setActiveTab("investments")}
+        >
+          📈 Investment (Module 6)
+        </button>
+        <button
+          className={`tab-nav-btn ${activeTab === "alerts" ? "active" : ""}`}
+          onClick={() => setActiveTab("alerts")}
+        >
+          🚨 Alerts & Anomalies (Module 7)
+        </button>
       </div>
 
       {loading ? (
@@ -278,10 +300,22 @@ export default function Dashboard() {
         <section className="panel">
           <SavingsPrediction currentMonth={period.month || budgetMonth} />
         </section>
-      ) : (
+      ) : activeTab === "health" ? (
         <section className="panel">
           <FinancialHealth
             currentMonth={period.month || budgetMonth}
+            onNavigateToBudget={() => setActiveTab("budgets")}
+          />
+        </section>
+      ) : activeTab === "investments" ? (
+        <section className="panel">
+          <InvestmentRecommendation
+            currentMonth={period.month || budgetMonth}
+          />
+        </section>
+      ) : (
+        <section className="panel">
+          <AlertsAndAnomalyDetection
             onNavigateToBudget={() => setActiveTab("budgets")}
           />
         </section>

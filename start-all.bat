@@ -4,7 +4,7 @@ echo           Starting Finance Manager
 echo ===================================================
 echo.
 echo 1. Launching ML Service (Port 8000)...
-start "Finance Manager - ML Service (Port 8000)" cmd /k "cd ml-service && python app.py"
+start "Finance Manager - ML Service (Port 8000)" cmd /k "cd ml-service && if exist venv\Scripts\python.exe ( venv\Scripts\python.exe app.py ) else ( python app.py )"
 
 echo 2. Launching Backend API (Port 5000)...
 start "Finance Manager - Backend (Port 5000)" cmd /k "cd backend && npm run dev"
