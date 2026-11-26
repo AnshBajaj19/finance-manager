@@ -193,7 +193,7 @@ export default function InvestmentRecommendation({ currentMonth }) {
       {/* Header & Month Bar */}
       <div className="budget-header-bar">
         <div>
-          <h3>Investment Recommendation (Module 6)</h3>
+          <h3>Investment Recommendation</h3>
           <p className="subtitle" style={{ margin: 0 }}>
             Suggest suitable investment categories based on income, savings, risk tolerance, goals & horizon
           </p>

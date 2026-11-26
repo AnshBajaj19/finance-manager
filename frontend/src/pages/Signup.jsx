@@ -29,7 +29,7 @@ export default function Signup() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
-        <h1>Finance Manager</h1>
+        <h1>Dhan Drishti</h1>
         <p className="subtitle">Create your account</p>
 
         {error && <div className="error-banner">{error}</div>}

@@ -95,7 +95,7 @@ export default function FinancialHealth({ currentMonth, onNavigateToBudget }) {
       {/* Header & Month Filter */}
       <div className="budget-header-bar">
         <div>
-          <h3>Financial Health Analysis (Module 5)</h3>
+          <h3>Financial Health Analysis</h3>
           <p className="subtitle" style={{ margin: 0 }}>
             Comprehensive behavioral assessment evaluating savings ratio, expense-to-income, and budget adherence
           </p>
@@ -306,7 +306,7 @@ export default function FinancialHealth({ currentMonth, onNavigateToBudget }) {
               </div>
 
               <div className="sim-control-item">
-                <label>Budget Discipline (Module 3):</label>
+                <label>Budget Discipline:</label>
                 <div style={{ display: "flex", gap: "8px", marginTop: "6px" }}>
                   <button
                     type="button"

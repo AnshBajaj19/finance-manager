@@ -66,8 +66,8 @@ async function getTransporter() {
  * Send an HTML email alert to the user
  */
 async function sendAlertEmail({ to, recipientName, alertType, title, message, metadata = {} }) {
-  const fromAddress = process.env.EMAIL_FROM || '"Finance Manager Alerts" <alerts@financemanager.local>';
-  const subject = `[Finance Manager Alert] ${title}`;
+  const fromAddress = process.env.EMAIL_FROM || '"Dhan Drishti Alerts" <alerts@dhandrishti.local>';
+  const subject = `[Dhan Drishti Alert] ${title}`;
 
   const amountStr = metadata.amount ? `₹${Number(metadata.amount).toLocaleString()}` : "";
   const categoryStr = metadata.category || "General";
@@ -115,7 +115,7 @@ async function sendAlertEmail({ to, recipientName, alertType, title, message, me
   <div class="container">
     <div class="header">
       <span class="badge">${badgeText}</span>
-      <h2 style="margin: 6px 0 0; font-size: 22px;">Finance Manager Alert</h2>
+      <h2 style="margin: 6px 0 0; font-size: 22px;">Dhan Drishti Alert</h2>
     </div>
     <div class="content">
       <p style="font-size: 15px; margin-top: 0;">Hello <strong>${recipientName || "User"}</strong>,</p>
@@ -143,15 +143,15 @@ async function sendAlertEmail({ to, recipientName, alertType, title, message, me
       </table>
 
       <div class="callout">
-        <strong>💡 Action Recommended:</strong> Verify if this expense was planned or check your remaining budget limits in Module 3. If this was an unexpected transaction, please review your account activity.
+        <strong>💡 Action Recommended:</strong> Verify if this expense was planned or check your remaining budget limits. If this was an unexpected transaction, please review your account activity.
       </div>
 
       <div class="btn-container">
-        <a href="http://localhost:5173" class="btn">View in Finance Manager</a>
+        <a href="http://localhost:5173" class="btn">View in Dhan Drishti</a>
       </div>
     </div>
     <div class="footer">
-      Sent by Finance Manager — Module 7 Alerts & Anomaly Detection System.<br>
+      Sent by Dhan Drishti — Alerts & Anomaly Detection System.<br>
       You received this email because alerts are enabled on your account.
     </div>
   </div>
@@ -160,7 +160,7 @@ async function sendAlertEmail({ to, recipientName, alertType, title, message, me
   `;
 
   const text = `
-[Finance Manager Alert] ${title}
+[Dhan Drishti Alert] ${title}
 
 Hello ${recipientName || "User"},
 
@@ -173,7 +173,7 @@ ${metadata.zScore ? `Statistical Z-Score: ${metadata.zScore.toFixed(2)}` : ""}
 
 Action Recommended: Review your dashboard at http://localhost:5173
 
-Sent by Finance Manager Module 7.
+Sent by Dhan Drishti.
   `.trim();
 
   try {
@@ -242,7 +242,7 @@ async function sendTestEmail({ to, recipientName }) {
     recipientName,
     alertType: "unusual_expense",
     title: "Test Alert & Anomaly Notification",
-    message: "This is a verification test email confirming that your Finance Manager Module 7 email notifications are successfully configured and working!",
+    message: "This is a verification test email confirming that your Dhan Drishti email notifications are successfully configured and working!",
     metadata: {
       amount: 4500,
       category: "Food",

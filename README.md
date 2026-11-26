@@ -1,4 +1,4 @@
-# Finance Manager
+# Dhan Drishti
 
 **Module 1** — signup/login, income management, expense management, expense
 history, edit/delete. The foundation every later module builds on.
@@ -84,7 +84,7 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 1. Sign up with a name, email, password
 2. You're logged in automatically → Dashboard
 3. Add income (e.g. Salary, ₹40,000)
-4. Go to **🎯 Budget Management (Module 3)** tab:
+4. Go to **🎯 Budget Management** tab:
    - Set a budget for **Food**: ₹5,000
    - Set a budget for **Transport**: ₹3,000
 5. Switch to **💳 Transactions** tab:
@@ -94,15 +94,15 @@ Open the URL Vite prints (usually `http://localhost:5173`).
    - Food spending is now ₹4,200 / ₹5,000 (84% spent, ₹800 remaining).
    - Add another ₹100 expense in Food → triggers **⚠️ You have used 86% of your Food budget.**
    - Add another ₹1,000 expense in Food → triggers **🚨 Food budget exceeded!** alert banner.
-7. Go to **💰 Savings Prediction (Module 4)** tab:
+7. Go to **💰 Savings Prediction** tab:
    - View your machine learning predicted savings and projected savings rate.
    - Test the interactive "What-If" simulator adjusting income and expenses.
-8. Go to **🏥 Financial Health (Module 5)** tab:
+8. Go to **🏥 Financial Health** tab:
    - View your overall Financial Health Score (e.g. 78/100).
    - Check the 5 weighted pillars: Savings Ratio, Expense Ratio, Budget Adherence, Discretionary Spending, Consistency.
    - Read personalized rule-based recommendations (e.g. "Try reducing shopping expenses by 15%").
    - Test the interactive score improvement simulator.
-9. Go to **📈 Investment (Module 6)** tab:
+9. Go to **📈 Investment** tab:
    - View auto-aggregated live monthly income, expenses, and net savings surplus.
    - Switch between **🟢 Low Risk (Conservative)**, **🟡 Medium Risk (Moderate)**, and **🔴 High Risk (Aggressive)** to see instant dynamic asset allocation adjustments.
    - Configure financial goals (Wealth Creation, Emergency Buffer, Retirement, Tax Saving, Home Downpayment) and investment horizons (Short, Medium, Long, Very Long Term).
@@ -110,7 +110,7 @@ Open the URL Vite prints (usually `http://localhost:5173`).
    - Check emergency buffer health check (recommended 3 to 6 months of expenses).
    - Test the **Interactive SIP & Corpus Growth Simulator** adjusting monthly investment, expected return rate, time horizon, and presets (Short-Term FD, Medium Hybrid, Long-Term Index, FIRE) with wealth milestone timelines.
    - Click **Save Profile** to persist preferences to MongoDB.
-10. Go to **🚨 Alerts & Anomalies (Module 7)** tab:
+10. Go to **🚨 Alerts & Anomalies** tab:
    - Notice the **🔔 Notification Bell** in the top navigation header showing real-time unread alert counts.
    - Click "📧 Test Email Alert" to send a verification alert email to your registered email address.
    - Use the **Live Anomaly Detection Workbench** to simulate entering a normal expense (e.g. ₹350 on Food) vs an anomalous spike (e.g. ₹4,500 on Food) to see instant multiplier and Z-Score diagnostics.

@@ -1,5 +1,5 @@
 """
-app.py — ML Service for Finance Manager
+app.py — ML Service for Dhan Drishti
 Supports:
 - Module 2: Automatic Expense Categorization (/predict)
 - Module 4: Monthly Savings Prediction (/predict-savings, /savings-model-info)

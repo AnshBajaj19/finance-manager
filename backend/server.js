@@ -22,7 +22,7 @@ app.use(express.json());
 connectDB();
 
 app.get("/", (req, res) => {
-  res.json({ message: "Finance Manager API is running." });
+  res.json({ message: "Dhan Drishti API is running." });
 });
 
 app.use("/api/auth", authRoutes);

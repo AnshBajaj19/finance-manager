@@ -28,7 +28,7 @@ export default function Login() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
-        <h1>Finance Manager</h1>
+        <h1>Dhan Drishti</h1>
         <p className="subtitle">Log in to your account</p>
 
         {error && <div className="error-banner">{error}</div>}

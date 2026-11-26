@@ -166,7 +166,7 @@ export default function AlertsAndAnomalyDetection({ onNavigateToBudget }) {
       {/* Header Bar */}
       <div className="budget-header-bar">
         <div>
-          <h3>Alerts & Anomaly Detection (Module 7)</h3>
+          <h3>Alerts & Anomaly Detection</h3>
           <p className="subtitle" style={{ margin: 0 }}>
             Proactive spending outlier detection via statistical Z-Score & rule thresholds with instant in-app and email alerts
           </p>
@@ -440,7 +440,7 @@ export default function AlertsAndAnomalyDetection({ onNavigateToBudget }) {
               📬 Alert Notification Feed & Email Dispatches
             </h4>
             <p style={{ margin: "2px 0 0", fontSize: "13px", color: "var(--text-muted)" }}>
-              Live record of all alerts triggered by Module 7
+              Live record of all triggered alerts
             </p>
           </div>
           {alerts.length > 0 && (
@@ -580,7 +580,7 @@ export default function AlertsAndAnomalyDetection({ onNavigateToBudget }) {
                   }
                 />
                 <div>
-                  <strong>Alert on Budget Exceeded (Module 3 Integration)</strong>
+                  <strong>Alert on Budget Exceeded</strong>
                   <span className="toggle-sub">
                     Triggers instant alert and email when an expense pushes category spending beyond 100%
                   </span>

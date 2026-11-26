@@ -145,7 +145,7 @@ export default function NotificationBell({ onNavigateToModule7, refreshTrigger }
         type="button"
         className={`bell-toggle-btn ${unreadCount > 0 ? "has-unread" : ""}`}
         onClick={() => setIsOpen((prev) => !prev)}
-        title="Notifications & Alerts (Module 7)"
+        title="Notifications & Alerts"
       >
         🔔
         {unreadCount > 0 && (
@@ -263,7 +263,7 @@ export default function NotificationBell({ onNavigateToModule7, refreshTrigger }
                 if (onNavigateToModule7) onNavigateToModule7();
               }}
             >
-              Open Module 7 Alerts & Anomalies Hub ➔
+              Open Alerts & Anomalies Hub ➔
             </button>
           </div>
         </div>

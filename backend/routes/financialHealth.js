@@ -357,8 +357,8 @@ async function computeFinancialHealth(userId, targetMonth) {
       id: "rec_set_budgets",
       type: "budget",
       priority: "medium",
-      title: "Activate Monthly Budgets (Module 3)",
-      message: "You haven't set monthly category budgets yet. Creating budgets in Module 3 will instantly raise your health score.",
+      title: "Activate Monthly Budgets",
+      message: "You haven't set monthly category budgets yet. Creating monthly category budgets will instantly raise your health score.",
       impact: "+8 health score points",
     });
   }
@@ -381,7 +381,7 @@ async function computeFinancialHealth(userId, targetMonth) {
       type: "growth",
       priority: "low",
       title: "Healthy Surplus Available for Investment",
-      message: `You are consistently saving ${Math.round(savingsRatio)}% of income! You are in an ideal position to explore investments in Module 6.`,
+      message: `You are consistently saving ${Math.round(savingsRatio)}% of income! You are in an ideal position to explore investments.`,
       impact: "Wealth compounding",
     });
   }

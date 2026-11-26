@@ -111,7 +111,7 @@ export default function SavingsPrediction({ currentMonth }) {
       {/* Top Header & Month Filter */}
       <div className="budget-header-bar">
         <div>
-          <h3>Monthly Savings Prediction (Module 4)</h3>
+          <h3>Monthly Savings Prediction</h3>
           <p className="subtitle" style={{ margin: 0 }}>
             Machine Learning regression forecasting your expected end-of-month savings
           </p>

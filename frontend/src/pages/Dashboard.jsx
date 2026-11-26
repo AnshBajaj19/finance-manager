@@ -150,7 +150,7 @@ export default function Dashboard() {
     <div className="dashboard">
       <header className="dashboard-header">
         <div>
-          <h1>Finance Manager</h1>
+          <h1>Dhan Drishti</h1>
           {user && <p className="subtitle">Welcome back, {user.name}</p>}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -226,7 +226,7 @@ export default function Dashboard() {
           className={`tab-nav-btn ${activeTab === "budgets" ? "active" : ""}`}
           onClick={() => setActiveTab("budgets")}
         >
-          🎯 Budget Management (Module 3)
+          🎯 Budget Management
           {activeAlerts.length > 0 && (
             <span className="alert-counter-badge">{activeAlerts.length}</span>
           )}
@@ -235,25 +235,25 @@ export default function Dashboard() {
           className={`tab-nav-btn ${activeTab === "savings" ? "active" : ""}`}
           onClick={() => setActiveTab("savings")}
         >
-          💰 Savings Prediction (Module 4)
+          💰 Savings Prediction
         </button>
         <button
           className={`tab-nav-btn ${activeTab === "health" ? "active" : ""}`}
           onClick={() => setActiveTab("health")}
         >
-          🏥 Financial Health (Module 5)
+          🏥 Financial Health
         </button>
         <button
           className={`tab-nav-btn ${activeTab === "investments" ? "active" : ""}`}
           onClick={() => setActiveTab("investments")}
         >
-          📈 Investment (Module 6)
+          📈 Investment
         </button>
         <button
           className={`tab-nav-btn ${activeTab === "alerts" ? "active" : ""}`}
           onClick={() => setActiveTab("alerts")}
         >
-          🚨 Alerts & Anomalies (Module 7)
+          🚨 Alerts & Anomalies
         </button>
       </div>
 
