@@ -66,6 +66,7 @@ async function getTransporter() {
  * Send an HTML email alert to the user
  */
 async function sendAlertEmail({ to, recipientName, alertType, title, message, metadata = {} }) {
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
   const fromAddress = process.env.EMAIL_FROM || '"Dhan Drishti Alerts" <alerts@dhandrishti.local>';
   const subject = `[Dhan Drishti Alert] ${title}`;
 
@@ -147,7 +148,7 @@ async function sendAlertEmail({ to, recipientName, alertType, title, message, me
       </div>
 
       <div class="btn-container">
-        <a href="http://localhost:5173" class="btn">View in Dhan Drishti</a>
+        <a href="${frontendUrl}" class="btn">View in Dhan Drishti</a>
       </div>
     </div>
     <div class="footer">
@@ -171,7 +172,7 @@ Category Average: ${avgStr}
 ${multStr ? `Deviation Factor: ${multStr}` : ""}
 ${metadata.zScore ? `Statistical Z-Score: ${metadata.zScore.toFixed(2)}` : ""}
 
-Action Recommended: Review your dashboard at http://localhost:5173
+Action Recommended: Review your dashboard at ${frontendUrl}
 
 Sent by Dhan Drishti.
   `.trim();
